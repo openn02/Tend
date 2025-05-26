@@ -1,0 +1,45 @@
+# Signal Rules Configuration
+
+# Meeting Overload Rules
+meeting_overload:
+  threshold: 12  # Maximum meetings per week
+  duration_threshold: 20  # Maximum meeting hours per week
+  weight:
+    meeting_count: 0.6
+    duration: 0.4
+
+# After Hours Activity Rules
+after_hours_activity:
+  calendar_threshold: 3  # Maximum after-hours meetings per week
+  slack_threshold: 3  # Maximum late-night Slack activity days per week
+  late_night_start: 21  # 9 PM
+  weight:
+    calendar: 0.5
+    slack: 0.5
+
+# Slack Activity Rules
+slack_activity:
+  channel_threshold: 10  # Maximum recommended channels
+  reaction_threshold: 50  # Maximum reactions per week
+  weight:
+    channels: 0.4
+    reactions: 0.6
+
+# Email Pattern Rules
+email_pattern:
+  message_threshold: 100  # Maximum messages per week
+  thread_threshold: 30  # Maximum threads per week
+  weight:
+    messages: 0.5
+    threads: 0.5
+
+# Nudge Templates
+nudges:
+  meeting_overload:
+    template: "You've had {total_meetings} meetings this week, totaling {total_duration_hours:.1f} hours. Consider blocking some focus time in your calendar."
+  after_hours_activity:
+    template: "We noticed {after_hours_meetings} after-hours meetings this week. Remember to maintain a healthy work-life balance."
+  slack_activity:
+    template: "You're active in {channel_count} channels and have used {reaction_count} reactions this week. Consider focusing on fewer channels for better engagement."
+  email_pattern:
+    template: "You've been part of {thread_count} email threads this week. Consider using async communication tools for non-urgent matters." 
