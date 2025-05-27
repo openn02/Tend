@@ -20,6 +20,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: false
+          fetch-depth: 0
+      
+      - name: Clean Git working tree
+        run: git clean -fdx
+      
+      - name: Check frontend directory contents
+        run: |
+          ls -al frontend/
+          test -f frontend/package-lock.json && echo "package-lock.json exists in frontend/"
       
       - name: Setup Node
         uses: actions/setup-node@v4
