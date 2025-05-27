@@ -3,7 +3,7 @@ from fastapi.responses import RedirectResponse
 from typing import Dict, Optional
 import httpx
 from app.core.config import settings
-from app.core.auth import get_current_user
+from app.core.security import verify_token
 from app.models.user import User
 
 router = APIRouter()
@@ -39,7 +39,7 @@ OAUTH_CONFIG = {
 @router.get("/{provider}/auth")
 async def initiate_oauth(
     provider: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(verify_token)
 ):
     """Initiate OAuth flow for a specific provider"""
     if provider not in OAUTH_CONFIG:
@@ -54,7 +54,7 @@ async def initiate_oauth(
 async def oauth_callback(
     provider: str,
     code: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(verify_token)
 ):
     """Handle OAuth callback and token exchange"""
     if provider not in OAUTH_CONFIG:
@@ -94,7 +94,7 @@ async def oauth_callback(
 @router.get("/{provider}/status")
 async def get_integration_status(
     provider: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(verify_token)
 ):
     """Get the connection status for a specific integration"""
     # TODO: Implement actual token validation and status check
