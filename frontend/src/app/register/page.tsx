@@ -24,7 +24,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/register', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,16 +116,16 @@ export default function RegisterPage() {
               >
                 {loading ? 'Creating account...' : 'Create Account'}
               </Button>
-
-              <div className="text-center text-sm text-gray-700">
-                Already have an account?{' '}
-                <Link href="/login" className="text-purple-600 hover:text-purple-500">
-                  Sign in
-                </Link>
-              </div>
             </form>
           </CardContent>
         </Card>
+
+        <div className="text-center text-sm text-gray-700 mt-4">
+          Already have an account?{' '}
+          <Link href="/login" className="text-purple-600 hover:text-purple-500">
+            Sign in
+          </Link>
+        </div>
       </div>
     </div>
   );
