@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:3000"
     
     # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/tend"
+    DATABASE_URL: str
     
     # OAuth Credentials
     ZOOM_CLIENT_ID: Optional[str] = None
