@@ -9,11 +9,6 @@ import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Tend - AI Wellbeing Assistant",
-  description: "Privacy-first AI wellbeing assistant",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
