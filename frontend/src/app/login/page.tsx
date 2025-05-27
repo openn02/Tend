@@ -96,6 +96,13 @@ export default function LoginPage() {
             </form>
           </CardContent>
         </Card>
+
+        <div className="text-center text-sm text-gray-600 mt-4">
+          Don't have an account?
+          <a href="/register" className="font-medium text-purple-600 hover:text-purple-500">
+            Create one
+          </a>
+        </div>
       </div>
     </div>
   );
