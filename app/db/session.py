@@ -4,11 +4,20 @@ from typing import AsyncGenerator
 from app.core.config import settings
 from app.db.base_class import Base
 
-# Update database URL for async
-SQLALCHEMY_DATABASE_URL = settings.SQLALCHEMY_DATABASE_URI.replace("postgresql://", "postgresql+asyncpg://")
+# Use DATABASE_URL from settings, which should come from Render env var
+DATABASE_URL = settings.DATABASE_URL
+
+# Update database URL for async, ensuring it starts with postgresql+asyncpg://
+if DATABASE_URL.startswith("postgresql://"):
+    ASYNC_DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+elif DATABASE_URL.startswith("postgresql+asyncpg://"):
+    ASYNC_DATABASE_URL = DATABASE_URL
+else:
+    # Handle other potential prefixes or raise an error
+    raise ValueError(f"Unsupported database URL scheme: {DATABASE_URL}")
 
 engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, 
+    ASYNC_DATABASE_URL, 
     pool_pre_ping=True, 
     # Add connect_args for asyncpg if needed, e.g., if using SSL
 )
