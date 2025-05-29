@@ -12,7 +12,7 @@ class GoogleOAuth:
     def __init__(self):
         self.client_id = settings.GOOGLE_CLIENT_ID
         self.client_secret = settings.GOOGLE_CLIENT_SECRET
-        self.redirect_uri = "http://localhost:3000/auth/google/callback"  # Update for production
+        self.redirect_uri = f"{settings.BACKEND_URL}/api/v1/integrations/google/callback"
 
     def get_oauth_url(self, state: str) -> str:
         """Generate Google OAuth URL"""
