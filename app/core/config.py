@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     
     # CORS
-    CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:3000"]  # Frontend URL
+    CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:3000", "https://app.trytend.com.au", "https://www.app.trytend.com.au"]  # Include production URLs in default
     
     @validator("CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
@@ -57,8 +57,8 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str = "admin"
     
     # Base URLs
-    BACKEND_URL: str = "http://localhost:8000"
-    FRONTEND_URL: str = "http://localhost:3000"
+    BACKEND_URL: str = "https://tend.onrender.com"
+    FRONTEND_URL: str = "https://app.trytend.com.au"
     
     # Database
     DATABASE_URL: str
