@@ -14,6 +14,11 @@ from app.crud.user import get_user_by_email, create_user
 
 router = APIRouter()
 
+@router.options("/register")
+async def options_register():
+    """Handle OPTIONS preflight request for /register"""
+    return {}
+
 @router.post("/login", response_model=Token)
 async def login(
     db: AsyncSession = Depends(get_db),
