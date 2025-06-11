@@ -35,7 +35,7 @@ export default function ProfilePage() {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:8000/api/v1/users/me', {
+        const response = await fetch('https://tend.onrender.com/api/v1/users/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -73,7 +73,7 @@ export default function ProfilePage() {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:8000/api/v1/users/me', {
+      const response = await fetch('https://tend.onrender.com/api/v1/users/me', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
