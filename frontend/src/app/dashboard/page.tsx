@@ -6,10 +6,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { toast } from "sonner";
 
 interface UserData {
+  id: string;
+  email: string;
   full_name: string;
   role: string;
-  email: string;
-  onboarding_completed: boolean;
+  is_active: boolean;
+  data_consent_given: boolean;
+  data_consent_updated_at: string | null;
+  created_at: string;
+  updated_at: string | null;
+  google_user_id: string | null;
+  slack_user_id: string | null;
+  team_id: string | null;
 }
 
 export default function DashboardPage() {
