@@ -19,19 +19,31 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      console.log('Attempting login with:', { email, password });
+      console.log('API URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+      
+      const requestBody = {
+        username: email,
+        password: password
+      };
+      console.log('Request body:', requestBody);
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username: email,
-          password,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
-        throw new Error('Invalid credentials');
+        const errorData = await response.json().catch(() => null);
+        console.error('Login failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorData
+        });
+        throw new Error(errorData?.detail || 'Invalid credentials');
       }
 
       const data = await response.json();
@@ -44,7 +56,8 @@ export default function LoginPage() {
       console.log('Redirecting to dashboard...');
       router.push('/');
     } catch (error) {
-      toast.error('Invalid email or password');
+      console.error('Login error:', error);
+      toast.error(error instanceof Error ? error.message : 'Invalid email or password');
     } finally {
       setLoading(false);
     }
