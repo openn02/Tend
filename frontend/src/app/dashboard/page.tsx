@@ -5,9 +5,16 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { toast } from "sonner";
 
+interface UserData {
+  full_name: string;
+  role: string;
+  email: string;
+  onboarding_completed: boolean;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
