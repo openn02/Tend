@@ -47,14 +47,22 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-      console.log('Login successful, storing token...');
+      console.log('Login response:', data);
       
+      if (!data.access_token) {
+        console.error('No access token in response:', data);
+        throw new Error('No access token received');
+      }
+
       // Store the token in localStorage
       localStorage.setItem('token', data.access_token);
+      console.log('Token stored in localStorage');
       
       toast.success('Login successful!');
-      console.log('Redirecting to dashboard...');
-      router.push('/');
+      console.log('Attempting to redirect to dashboard...');
+      
+      // Force a hard navigation to the dashboard
+      window.location.href = '/';
     } catch (error) {
       console.error('Login error:', error);
       toast.error(error instanceof Error ? error.message : 'Invalid email or password');
