@@ -22,18 +22,18 @@ export default function LoginPage() {
       console.log('Attempting login with:', { email, password });
       console.log('API URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
       
-      const requestBody = {
-        username: email,
-        password: password
-      };
-      console.log('Request body:', requestBody);
+      const formData = new URLSearchParams();
+      formData.append('username', email);
+      formData.append('password', password);
+      
+      console.log('Request body:', Object.fromEntries(formData));
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(requestBody),
+        body: formData,
       });
 
       if (!response.ok) {
