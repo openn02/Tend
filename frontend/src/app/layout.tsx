@@ -18,7 +18,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     const publicPaths = ['/login', '/register'];
 
     if (!token && !publicPaths.includes(pathname)) {
