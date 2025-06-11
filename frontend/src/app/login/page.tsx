@@ -40,7 +40,18 @@ export default function LoginPage() {
       localStorage.setItem('token', data.access_token);
       
       toast.success('Login successful!');
-      router.push('/profile'); // Redirect to profile page after successful login
+      // Check if the user has completed onboarding
+      const userResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/me`, {
+        headers: {
+          'Authorization': `Bearer ${data.access_token}`
+        }
+      });
+      const userData = await userResponse.json();
+      if (userData.onboarding_completed) {
+        router.push('/dashboard');
+      } else {
+        router.push('/onboarding');
+      }
     } catch (error) {
       toast.error('Login failed. Please check your credentials.');
     } finally {
