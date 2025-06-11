@@ -51,7 +51,7 @@ export default function LoginPage() {
       const userData = await userResponse.json();
       console.log('User data:', userData);
       
-      if (userData.onboarding_completed) {
+      if (userData.data_consent_given) {
         console.log('Redirecting to dashboard...');
         router.push('/');
       } else {
