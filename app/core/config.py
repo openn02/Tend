@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     
     # CORS
-    CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:3000", "https://app.trytend.com.au", "https://www.app.trytend.com.au"]  # Include production URLs in default
+    CORS_ORIGINS: List[str] = ["http://localhost:3000", "https://app.trytend.com.au", "https://www.app.trytend.com.au"]  # Include production URLs in default
     
     @validator("CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
