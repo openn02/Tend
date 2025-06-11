@@ -1,12 +1,13 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import SignalsOverview from "../components/dashboard/SignalsOverview";
 import ManagerDashboard from "../components/dashboard/ManagerDashboard";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { useRole } from "../contexts/RoleContext";
 import OverallWellbeingTrend from "../components/dashboard/OverallWellbeingTrend";
+import { useRouter } from "next/navigation";
 
 // Mock data for incoming nudge request
 const mockIncomingNudgeRequest = {
@@ -15,12 +16,55 @@ const mockIncomingNudgeRequest = {
 };
 
 export default function DashboardPage() {
-  const { role } = useRole();
+  const router = useRouter();
+  const { role, setRole } = useRole();
   const [incomingRequestState, setIncomingRequestState] = useState<'pending' | 'accepted' | 'declined' | 'none'>(mockIncomingNudgeRequest.detected ? 'pending' : 'none');
   const pendingNudgeRequestsCount = incomingRequestState === 'pending' ? 1 : 0;
 
+  useEffect(() => {
+    const checkUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          router.push('/login');
+          return;
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = await response.json();
+        console.log('User data:', userData);
+
+        // Check if user has completed onboarding
+        if (!userData.data_consent_given) {
+          console.log('User has not completed onboarding, redirecting...');
+          router.push('/onboarding');
+          return;
+        }
+
+        // Set the role from user data
+        if (userData.role) {
+          console.log('Setting role from user data:', userData.role);
+          setRole(userData.role);
+        }
+      } catch (error) {
+        console.error('Error checking user data:', error);
+      }
+    };
+
+    checkUserData();
+  }, [router, setRole]);
+
   // Placeholder for user's name
-  const userName = "Ollie"; // Replace with dynamic user name later
+  const userName = "Ollie";
   
   return (
     <div className="min-h-screen bg-gray-50">
