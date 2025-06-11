@@ -35,21 +35,27 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
+      console.log('Login response:', data);
       
       // Store the token in localStorage
       localStorage.setItem('token', data.access_token);
       
       toast.success('Login successful!');
       // Check if the user has completed onboarding
+      console.log('Fetching user data...');
       const userResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/me`, {
         headers: {
           'Authorization': `Bearer ${data.access_token}`
         }
       });
       const userData = await userResponse.json();
+      console.log('User data:', userData);
+      
       if (userData.onboarding_completed) {
-        router.push('/dashboard');
+        console.log('Redirecting to dashboard...');
+        router.push('/');
       } else {
+        console.log('Redirecting to onboarding...');
         router.push('/onboarding');
       }
     } catch (error) {
