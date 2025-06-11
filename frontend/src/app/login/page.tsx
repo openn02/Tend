@@ -39,6 +39,7 @@ export default function LoginPage() {
       
       // Store the token in localStorage
       localStorage.setItem('token', data.access_token);
+      console.log('Token stored in localStorage');
       
       toast.success('Login successful!');
       // Check if the user has completed onboarding
@@ -48,14 +49,21 @@ export default function LoginPage() {
           'Authorization': `Bearer ${data.access_token}`
         }
       });
+      
+      if (!userResponse.ok) {
+        console.error('Failed to fetch user data:', userResponse.status, userResponse.statusText);
+        throw new Error('Failed to fetch user data');
+      }
+      
       const userData = await userResponse.json();
       console.log('User data:', userData);
+      console.log('Data consent given:', userData.data_consent_given);
       
       if (userData.data_consent_given) {
-        console.log('Redirecting to dashboard...');
+        console.log('User has given consent, redirecting to dashboard...');
         router.push('/');
       } else {
-        console.log('Redirecting to onboarding...');
+        console.log('User has not given consent, redirecting to onboarding...');
         router.push('/onboarding');
       }
     } catch (error) {
